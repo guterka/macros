@@ -1,6 +1,7 @@
 // Dynamic array macros
 #ifndef DA_H
 #define DA_H
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #define DA_RATIO 1.618
@@ -31,7 +32,8 @@
       (da).capacity = new_cap;						\
     }									\
     assert((da).items);							\
-    (da).items[da.size++] = (item);					\
+    (da).items[(da).size] = (item);					\
+    (da).size += 1;							\
   } while(0)								\
 
 #define DA_APPEND_ARR(da, arr, sz) do {					\
@@ -50,9 +52,16 @@
 #define DA_AT(da, i) ((da).items[(i)])
 
 #define DA_POP(da, i) do {						\
-    assert((i) < (da).size);						\
+    assert(0 < (i) && (i) < (da).size);					\
     for (size_t pos = (i); pos < (da).size - 1; pos++) (da).items[pos] = (da).items[pos+1]; \
     (da).size--;							\
+  } while(0)								\
+
+#define DA_INSERT(da, i, val) do {					\
+    assert(0 < (i) && (i) < (da).size);					\
+    DA_APPEND((da), DA_AT((da), (da).size - 1));			\
+    for (size_t pos = (i); pos < (da).size - 2; pos++) (da).items[pos + 1] = (da).items[pos]; \
+    (da).items[(i)] = val;						\
   } while(0)								\
 
 #endif // DA_H
