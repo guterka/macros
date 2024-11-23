@@ -26,8 +26,8 @@
 #define DA_DEFAULT(type) da_##type##_default()
 
 #define DA_APPEND(da, item) do {					\
-    size_t new_cap = MAX((da).capacity + sizeof((item)), (size_t) ((da).capacity * DA_RATIO)); \
     if ((da).size == (da).capacity) {					\
+      size_t new_cap = MAX((da).capacity + sizeof((item)), (size_t) ((da).capacity * DA_RATIO)); \
       (da).items = realloc((da).items, new_cap * sizeof((da).items[0])); \
       (da).capacity = new_cap;						\
     }									\
